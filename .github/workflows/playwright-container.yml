@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       # image: mcr.microsoft.com/playwright/dotnet:v1.51.0-noble
-      image: mcr.microsoft.com/playwright/dotnet:latest
+      image: mcr.microsoft.com/playwright/dotnet:v1.59.0-noble
       options: --user 1001
     steps:
       - uses: actions/checkout@v5 
