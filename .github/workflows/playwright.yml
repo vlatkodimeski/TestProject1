@@ -1,29 +1,27 @@
-name: Playwright Tests - From Container
+name: Playwright Tests
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  playwright:
-    name: 'Playwright Tests - From Container'
+  test:
+    timeout-minutes: 60
     runs-on: ubuntu-latest
-    container:
-      # image: mcr.microsoft.com/playwright/dotnet:v1.51.0-noble
-      image: mcr.microsoft.com/playwright/dotnet:latest
-      options: --user 1001
     steps:
-      - uses: actions/checkout@v5
-
-      - name: Verify container environment
-        run: |
-          echo "Hostname: $(hostname)"
-          cat /etc/os-release
-          dotnet --version
-          pwsh -c "playwright --version"
-
-      - name: Build
-        run: dotnet build
-        working-directory: TestProject1
-
-      - name: Run your tests
-        run: dotnet test -s ./.runsettings
-        working-directory: TestProject1
+    - uses: actions/checkout@v5
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: 10.0.x
+    - name: Build
+      working-directory: TestProject1
+      run: dotnet build
+    - name: Ensure browsers are installed
+      working-directory: TestProject1
+      run: pwsh ./bin/Debug/net10.0/playwright.ps1 install --with-deps
+    - name: Run your tests
+      working-directory: TestProject1
+      run: dotnet test
+      
