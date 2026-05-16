@@ -11,10 +11,10 @@ jobs:
       image: mcr.microsoft.com/playwright/dotnet:latest
       options: --user 1001
     steps:
-      - uses: actions/checkout@v4      
+      - uses: actions/checkout@v5 
       - name: Build
         run: dotnet build
         working-directory: TestProject1
       - name: Run your tests
-        run: dotnet test -s ./.runsettings
+        run: dotnet test
         working-directory: TestProject1
